@@ -1,4 +1,5 @@
 import numpy as np
+import mcts
 
 class TicTacToe:
     def __init__(self) -> None:
@@ -19,6 +20,9 @@ class TicTacToe:
         return (state.reshape(-1) == 0).astype(np.uint8)
     
     def check_win(self, state, action):
+        if action == None:
+            return False
+        
         row = action // self.col
         col = action % self.col
         player = state[row, col]
@@ -40,30 +44,11 @@ class TicTacToe:
     def get_opponent(self, player):
         return -player
     
-tictactoe = TicTacToe()
-player = 1
+    def get_opponent_value(self, value):
+        return -value
+    
+    def change_perspective(self, state, player):
+        return state * player
+    
 
-state = tictactoe.get_initial_state()
 
-while True:
-    print(state)
-    valid_moves = tictactoe.get_valid_moves(state)
-    print("valid moves", [i for i in range(tictactoe.board) if valid_moves[i] == 1])
-    action = int(input(f"{player}:"))
-
-    if valid_moves[action] == 0:
-        print("Not Valid")
-        continue
-
-    state = tictactoe.get_next_state(state, action, player)
-    value, is_terminal = tictactoe.get_value_and_terminated(state, action)
-
-    if is_terminal:
-        print(state)
-        if value == 1:
-            print(player, "won")
-        else:
-            print("draw")
-        break
-
-    player = tictactoe.get_opponent(player)
