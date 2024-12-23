@@ -29,7 +29,7 @@ class TicTacToe:
 
         return (
             np.sum(state[row, :]) == player * self.col
-            or np.sum(state[:, row]) == player * self.row
+            or np.sum(state[:, col]) == player * self.row
             or np.sum(np.diag(state)) == player * self.row
             or np.sum(np.diag(np.flip(state, axis=0))) == player * self.row
         )
